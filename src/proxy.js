@@ -97,7 +97,7 @@ Proxy.prototype.serverData = function OnClientData(data) {
  */
 Proxy.prototype.close = function OnClose() {
 	if (this._tcp) {
-		mes.info("Connection closed from '%s'.", this._to);
+		// mes.info("Connection closed from '%s'.", this._to);
 
 		this._tcp.removeListener('close', this.close.bind(this) );
 		this._tcp.removeListener('error', this.close.bind(this) );
@@ -106,7 +106,7 @@ Proxy.prototype.close = function OnClose() {
 	}
 
 	if (this._ws) {
-		mes.info("Connection closed from '%s'.", this._from);
+		// mes.info("Connection closed from '%s'.", this._from);
 
 		this._ws.removeListener('close',   this.close.bind(this) );
 		this._ws.removeListener('error',   this.close.bind(this) );
