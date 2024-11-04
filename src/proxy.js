@@ -1,8 +1,23 @@
+const CryptoJS = require('crypto-js');
+
 /**
  * Dependencies
  */
-var net     = require('net');
-var mes     = require('./message');
+var net        = require('net');
+var mes        = require('./message');
+var secretKey  = "64df901bab326cd3215f381da1f960d5f279b4d62442981dff7d12725f55dfa0";
+
+// Function to encrypt a message
+function encrypt(message) {
+	 const encrypted = CryptoJS.AES.encrypt(message, secretKey).toString();
+	 return Buffer.from(encrypted);
+}
+
+// Function to decrypt a message
+function decrypt(message) {
+	const bytes = CryptoJS.AES.decrypt(message, secretKey);
+	return bytes.toString(CryptoJS.enc.Utf8);
+}
 
 /**
  * Constructor
@@ -53,11 +68,10 @@ Proxy.prototype.clientData = function OnServerData(data) {
 	}
 
 	try {
-		this._tcp.write(data);
+		const msg = decrypt(data.toString());
+		this._tcp.write(msg);
 	}
-	catch(e) {
-
-	}
+	catch(e) {}
 }
 
 
@@ -66,7 +80,8 @@ Proxy.prototype.clientData = function OnServerData(data) {
  * Server -> Client
  */
 Proxy.prototype.serverData = function OnClientData(data) {
-	this._ws.send(data, function(error){
+	let msg = encrypt(data.toString());
+	this._ws.send(msg, function(error){
 		/*
 		if (error !== null) {
 			OnClose();
