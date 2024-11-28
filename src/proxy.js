@@ -64,7 +64,7 @@ Proxy.prototype.clientData = function OnServerData(data) {
  * Server -> Client
  */
 Proxy.prototype.serverData = function OnClientData(data) {
-	this._ws.send(data, function(error){
+	this._ws.send(data.toString(), function(error){
 		/*
 		if (error !== null) {
 			OnClose();
